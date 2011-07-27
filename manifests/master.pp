@@ -12,6 +12,4 @@ class trocla::master {
       ensure   => present,
       provider => gem,
   }
-
-  include trocla::config
 }

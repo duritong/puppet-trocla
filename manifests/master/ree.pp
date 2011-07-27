@@ -9,6 +9,4 @@ class trocla::master::ree {
   require ruby-enterprise::gems::highline
   
   ruby-enterprise::gem{'trocla': }
-
-  include trocla::config
 }
