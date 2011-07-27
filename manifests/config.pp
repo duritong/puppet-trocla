@@ -13,7 +13,7 @@ class trocla::config($ruby='system') {
       owner => root, group => puppet, mode => 0640;
     '/etc/trocla.yaml':
       ensure => link,
-      target => "${settings::confdir}/trocla.yaml",
+      target => "${settings::confdir}/trocla.yaml";
     "${settings::confdir}/trocla_data.yaml":
       ensure => present,
       owner => puppet, group => 0, mode => 0600;
