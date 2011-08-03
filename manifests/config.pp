@@ -1,8 +1,8 @@
 class trocla::config($ruby='system') {
-  if $trocla::default_config::ruby == 'system' or $trocla::default_config::ruby == 'both' {
+  if $trocla::config::ruby == 'system' or $trocla::config::ruby == 'both' {
     require trocla::master
   }
-  if $trocla::default_config::ruby == 'ree' or $trocla::default_config::ruby == 'both' {
+  if $trocla::config::ruby == 'ree' or $trocla::config::ruby == 'both' {
     require trocla::master::ree
   }
 
