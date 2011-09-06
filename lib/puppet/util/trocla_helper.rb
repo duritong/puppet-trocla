@@ -16,7 +16,11 @@ module Puppet::Util::TroclaHelper
         key = args[0] || raise(Puppet::ParseError, "You need to pass at least a key as an argument!")
         format = args[1] || 'plain'
         options = args[2] || {}
-        
+        if options.is_a?(String)
+          require 'yaml'
+          options = YAML.load(options)
+        end
+
         configfile = File.join(File.dirname(Puppet.settings[:config]), "troclarc.yaml")
 
         raise(Puppet::ParseError, "Trocla config file #{configfile} not readable") unless File.exist?(configfile)
