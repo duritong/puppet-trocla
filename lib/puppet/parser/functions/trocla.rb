@@ -20,6 +20,10 @@ Create or get the mysql style sha1 hashed password.
                                                # this needs to be assigned
                                                # like that.
     $password_user3 = trocla('user3','pgsql', $options_user3)
+
+Options can also be passed as a yaml string:
+
+    $password_user3 = trocla('user3','pgsql', \"username: 'user3'\")
   "
   ) do |*args|
     require File.dirname(__FILE__) + '/../../util/trocla_helper'
