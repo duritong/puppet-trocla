@@ -5,8 +5,8 @@
 # [Remember: No empty lines between comments and class definition]
 class trocla::master::ree {
 
-  require ruby-enterprise::gems::moneta
-  require ruby-enterprise::gems::highline
+  require ruby_enterprise::gems::moneta
+  require ruby_enterprise::gems::highline
   
-  ruby-enterprise::gem{'trocla': }
+  ruby_enterprise::gem{'trocla': }
 }
