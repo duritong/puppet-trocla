@@ -1,3 +1,4 @@
+# deploy a trocla config
 class trocla::config($ruby='system') {
   if $trocla::config::ruby == 'system' or $trocla::config::ruby == 'both' {
     require trocla::master
@@ -10,12 +11,16 @@ class trocla::config($ruby='system') {
   file{
     "${settings::confdir}/troclarc.yaml":
       content => "---\nadapter_options:\n    :file: ${settings::confdir}/trocla_data.yaml\n",
-      owner => root, group => puppet, mode => 0640;
+      owner   => root,
+      group   => puppet,
+      mode    => '0640';
     '/etc/troclarc.yaml':
-      ensure => link,
-      target => "${settings::confdir}/troclarc.yaml";
+      ensure  => link,
+      target  => "${settings::confdir}/troclarc.yaml";
     "${settings::confdir}/trocla_data.yaml":
-      ensure => present,
-      owner => puppet, group => 0, mode => 0600;
+      ensure  => present,
+      owner   => puppet,
+      group   => 0,
+      mode    => '0600';
   }
 }

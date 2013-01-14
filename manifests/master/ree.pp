@@ -7,6 +7,6 @@ class trocla::master::ree {
 
   require ruby_enterprise::gems::moneta
   require ruby_enterprise::gems::highline
-  
+
   ruby_enterprise::gem{'trocla': }
 }

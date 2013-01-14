@@ -7,9 +7,9 @@ class trocla::master {
 
   require rubygems::moneta
   require rubygems::highline
-  
+
   package{'trocla':
-      ensure   => present,
-      provider => gem,
+    ensure   => present,
+    provider => gem,
   }
 }
