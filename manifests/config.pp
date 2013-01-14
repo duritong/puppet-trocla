@@ -9,7 +9,7 @@ class trocla::config($ruby='system') {
   # deploy default config file and link it for trocla cli lookup
   file{
     "${settings::confdir}/troclarc.yaml":
-      content => "---\nadapter_options:\n    :path: ${settings::confdir}/trocla_data.yaml\n",
+      content => "---\nadapter_options:\n    :file: ${settings::confdir}/trocla_data.yaml\n",
       owner => root, group => puppet, mode => 0640;
     '/etc/troclarc.yaml':
       ensure => link,
