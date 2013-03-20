@@ -50,9 +50,7 @@ trocla, for example via cli.
     configfile = File.join(File.dirname(Puppet.settings[:config]), "troclarc.yaml")
   
     raise(Puppet::ParseError, "Trocla config file #{configfile} not readable") unless File.exist?(configfile)
-    raise(Puppet::ParseError, "You need rubygems to use Trocla") unless Puppet.features.rubygems?
-  
-    require 'rubygems'
+
     require 'trocla'
   
     result = (trocla=Trocla.new(configfile)).set_password(key,format,value)

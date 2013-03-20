@@ -25,9 +25,7 @@ module Puppet::Util::TroclaHelper
         configfile = File.join(File.dirname(Puppet.settings[:config]), "troclarc.yaml")
 
         raise(Puppet::ParseError, "Trocla config file #{configfile} is not readable") unless File.exist?(configfile)
-        raise(Puppet::ParseError, "You need rubygems to use Trocla") unless Puppet.features.rubygems?
 
-        require 'rubygems'
         require 'trocla'
         
         has_options ? Trocla.new(configfile).send(trocla_func, key, format, options) : Trocla.new(configfile).send(trocla_func, key, format)
