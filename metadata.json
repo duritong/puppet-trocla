@@ -6,7 +6,7 @@
   "project_page": "https://github.com/duritong/trocla",
   "source": "https://github.com/duritong/puppet-trocla",
   "summary": "",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "checksums": {
     "Modulefile": "431cf06775a63c7cffa657b0d0911efd",
     "README": "d4025a6e12d37adb7b8317bc89a2f807",
