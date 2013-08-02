@@ -3,21 +3,33 @@
 # This module manages the necessary things for trocla on a master.
 #
 # [Remember: No empty lines between comments and class definition]
-class trocla::master {
+class trocla::master (
+  $install_deps = false,
+  $use_rubygems = true,
+) {
 
-#  require rubygems::moneta
-#  require rubygems::highline
+  #Select if the upstream rubygems modules should be required for install
+  if $use_rubygems {
+    require rubygems::moneta
+    require rubygems::highline
+  }
 
-  package { 'moneta':
-    ensure   => present,
-    provider => gem,
+  #Manually install requirements via gem
+  if $install_deps {
+    package { 'moneta':
+      ensure   => present,
+      provider => gem,
+    }
+    package { 'highline':
+      ensure   => present,
+      provider => gem,
+    }
   }
-  package { 'highline':
-    ensure   => present,
-    provider => gem,
-  }
+
+  #Main trocla install
   package {'trocla':
     ensure   => present,
     provider => gem,
   }
+
 }
