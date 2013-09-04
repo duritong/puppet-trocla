@@ -1,0 +1,9 @@
+---
+options:
+    random: true
+    length: <%= @keysize %> 
+adapter: :<%= @adapter %>
+adapter_options:
+<% @adapter_options.each do |key,value| -%>
+    :<%= key -%>: '<%= value -%>'
+<% end -%>
