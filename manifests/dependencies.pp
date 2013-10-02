@@ -1,3 +1,6 @@
+# manage trocla's dependencies
+#
+# [*provider*] How to install the dependencies.
 class trocla::dependencies(
   $provider = gem,
 ) {
