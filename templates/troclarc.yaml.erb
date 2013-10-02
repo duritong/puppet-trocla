@@ -1,9 +1,11 @@
 ---
 options:
-    random: true
-    length: <%= @keysize %> 
+    random: <%= @random_passwords %>
+    length: <%= @password_length %> 
 adapter: :<%= @adapter %>
+<% unless @adapter_options.empty? %>
 adapter_options:
 <% @adapter_options.each do |key,value| -%>
-    :<%= key -%>: '<%= value -%>'
+    :<%= key %>: '<%= value %>'
+<% end -%>
 <% end -%>

@@ -1,6 +1,7 @@
 # Class: trocla::master::ree
 #
-# This module manages the necessary things for trocla on a master.
+# This module manages the necessary things for trocla on a master for
+# RubyEnterprise installation.
 #
 # [Remember: No empty lines between comments and class definition]
 class trocla::master::ree {

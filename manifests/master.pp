@@ -2,10 +2,14 @@
 #
 # This module manages the necessary things for trocla on a master.
 #
-# [Remember: No empty lines between comments and class definition]
+# [*install_deps*]: Whether to directly install the necessary dependencies
+# [*use_rubygems*]: Use the rubygems module to manage your dependencies
+# [*provider*]:     Which provider to use to install your dependencies, if you
+#                   don't use the rubygems module
 class trocla::master (
   $install_deps = false,
   $use_rubygems = true,
+  $provider     = gem,
 ) {
 
   #Select if the upstream rubygems modules should be required for install
@@ -16,20 +20,15 @@ class trocla::master (
 
   #Manually install requirements via gem
   if $install_deps {
-    package { 'moneta':
-      ensure   => present,
-      provider => gem,
-    }
-    package { 'highline':
-      ensure   => present,
-      provider => gem,
+    class{'trocla::dependencies':
+      provider => $provider,
     }
   }
 
   #Main trocla install
   package {'trocla':
     ensure   => present,
-    provider => gem,
+    provider => $provider,
   }
 
 }
