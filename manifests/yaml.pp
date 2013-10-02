@@ -1,5 +1,5 @@
 class trocla::yaml(
-  $password_length  = 16
+  $password_length  = 16,
   $random_passwords = true,
   $data_file        = "{$settings::server_datadir}/trocla_data.yaml",
 ) {
