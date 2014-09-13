@@ -1,21 +1,14 @@
 {
   "name": "duritong-trocla",
+  "version": "0.0.4",
   "author": "duritong",
-  "description": "Query/Use trocla (https://github.com/duritong/trocla) from puppet",
-  "license": "",
-  "project_page": "https://github.com/duritong/trocla",
+  "summary": "This modules allows you to use trocla (https://github.com/duritong/trocla) from puppet.",
+  "license": "GPLv2",
   "source": "https://github.com/duritong/puppet-trocla",
-  "summary": "",
-  "version": "0.0.2",
-  "checksums": {
-    "Modulefile": "431cf06775a63c7cffa657b0d0911efd",
-    "README": "d4025a6e12d37adb7b8317bc89a2f807",
-    "lib/puppet/parser/functions/trocla.rb": "9d9e2472b99079dcec1bcbb5e4e74db2",
-    "lib/puppet/parser/functions/trocla_get.rb": "2a140366c2506d93c9705ae3705942d2",
-    "lib/puppet/util/trocla_helper.rb": "7da306ce8fa229bdc6d0e37a50087a6a",
-    "manifests/config.pp": "2160ee7d4089d6c3d15379d2f9789242",
-    "manifests/master.pp": "938d8681cdc1f8fadc5c2dc63447ee64",
-    "manifests/master/ree.pp": "f48611c532170c9fb7f73017a8df1f6f"
-  },
-  "dependencies": []
+  "project_page": "https://github.com/duritong/puppet-trocla",
+  "issues_url": "https://github.com/duritong/puppet-trocla/issues",
+  "description": "This modules allows you use trocla lookups as puppet functions.",
+  "dependencies": [
+  
+  ]
 }
