@@ -14,6 +14,7 @@ class trocla::master (
 
   #Select if the upstream rubygems modules should be required for install
   if $use_rubygems {
+    require ruby::devel
     require rubygems::moneta
     require rubygems::highline
   }
