@@ -7,8 +7,8 @@
 # [*provider*]:     Which provider to use to install your dependencies, if you
 #                   don't use the rubygems module
 class trocla::master (
-  $install_deps = false,
-  $use_rubygems = true,
+  $install_deps = true,
+  $use_rubygems = false,
   $provider     = gem,
 ) {
 
