@@ -5,6 +5,10 @@
 #                        By default it's YAML
 # [*adapter_options*]    This will contain a hash of the adapter options to pass the
 #                        trocla configuration.
+# [*encryption*]         Defines the encryption method for password stored in the backend.
+#                        By default no encryption is used.
+# [*ssl_options*]        This will contain a hash of the ssl options to pass the
+#                        trocla configuration.
 # [*password_length*]    Define the length of default passwords to create. 16 by default
 # [*random_passwords*]   Should trocla generate random passwords
 #                        if none can be found. *true* by default.
@@ -14,6 +18,8 @@ class trocla::config (
   $password_length      = 16,
   $random_passwords     = true,
   $adapter_options      = {},
+  $encryption           = undef,
+  $ssl_options          = {},
   $manage_dependencies  = true,
 ) {
   if $manage_dependencies {
