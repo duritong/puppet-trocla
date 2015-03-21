@@ -1,6 +1,6 @@
 {
   "name": "duritong-trocla",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "author": "duritong",
   "summary": "This modules allows you to use trocla (https://github.com/duritong/trocla) from puppet.",
   "license": "GPLv2",
