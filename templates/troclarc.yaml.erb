@@ -9,3 +9,12 @@ adapter_options:
     :<%= key %>: '<%= value %>'
 <% end -%>
 <% end -%>
+<% if @encryption %>
+encryption: :<%= @encryption %>
+<% end -%>
+<% unless @ssl_options.empty? %>
+ssl_options:
+<% @ssl_options.each do |key,value| -%>
+    :<%= key %>: '<%= value %>'
+<% end -%>
+<% end -%>

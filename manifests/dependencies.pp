@@ -4,11 +4,7 @@
 class trocla::dependencies(
   $provider = gem,
 ) {
-  package { 'moneta':
-    ensure   => present,
-    provider => $provider,
-  }
-  package { 'highline':
+  package { [ 'moneta', 'highline', 'bcrypt' ]:
     ensure   => present,
     provider => $provider,
   }
