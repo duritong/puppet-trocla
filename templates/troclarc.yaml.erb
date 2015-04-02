@@ -5,7 +5,7 @@ options:
 adapter: :<%= @adapter %>
 <% unless @adapter_options.empty? %>
 adapter_options:
-<% @adapter_options.each do |key,value| -%>
-    :<%= key %>: '<%= value %>'
+<% @adapter_options.keys.sort.each do |key| -%>
+    :<%= key %>: '<%= @adapter_options[key] %>'
 <% end -%>
 <% end -%>
