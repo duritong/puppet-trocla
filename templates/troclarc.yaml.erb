@@ -14,7 +14,7 @@ encryption: :<%= @encryption %>
 <% end -%>
 <% unless @ssl_options.empty? %>
 ssl_options:
-<% @ssl_options.each do |key,value| -%>
-    :<%= key %>: '<%= value %>'
+<% @ssl_options.keys.sort.each do |key| -%>
+    :<%= key %>: '<%= @ssl_options[key] %>'
 <% end -%>
 <% end -%>
