@@ -5,8 +5,8 @@ options:
 adapter: :<%= @adapter %>
 <% unless @adapter_options.empty? %>
 adapter_options:
-<% @adapter_options.each do |key,value| -%>
-    :<%= key %>: '<%= value %>'
+<% @adapter_options.keys.sort.each do |key| -%>
+    :<%= key %>: '<%= @adapter_options[key] %>'
 <% end -%>
 <% end -%>
 <% if @encryption %>
@@ -14,7 +14,7 @@ encryption: :<%= @encryption %>
 <% end -%>
 <% unless @ssl_options.empty? %>
 ssl_options:
-<% @ssl_options.each do |key,value| -%>
-    :<%= key %>: '<%= value %>'
+<% @ssl_options.keys.sort.each do |key| -%>
+    :<%= key %>: '<%= @ssl_options[key] %>'
 <% end -%>
 <% end -%>
