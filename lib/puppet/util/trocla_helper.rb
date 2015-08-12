@@ -16,7 +16,7 @@ module Puppet::Util::TroclaHelper
         key = args[0] || raise(Puppet::ParseError, "You need to pass at least a key as an argument!")
         format = args[1] || 'plain'
         options = args[2] || {}
-        
+
         if options.is_a?(String)
           require 'yaml'
           options = YAML.load(options)
@@ -27,7 +27,7 @@ module Puppet::Util::TroclaHelper
         raise(Puppet::ParseError, "Trocla config file #{configfile} is not readable") unless File.exist?(configfile)
 
         require 'trocla'
-        
+
         has_options ? Trocla.new(configfile).send(trocla_func, key, format, options) : Trocla.new(configfile).send(trocla_func, key, format)
   end
   module_function :trocla

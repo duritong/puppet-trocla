@@ -38,21 +38,21 @@ trocla, for example via cli.
     if args[0].is_a?(Array)
       args = args[0]
     end
-  
+
     key = args[0] 
     value = args[1]
     raise(Puppet::ParseError, "You need to pass at least key & value as an argument!") if key.nil? || value.nil?
-  
+
     format = args[2] || 'plain'
     return_format = args[3] || format
     options = args[4] || {}
-  
+
     configfile = File.join(File.dirname(Puppet.settings[:config]), "troclarc.yaml")
-  
+
     raise(Puppet::ParseError, "Trocla config file #{configfile} not readable") unless File.exist?(configfile)
 
     require 'trocla'
-  
+
     result = (trocla=Trocla.new(configfile)).set_password(key,format,value)
     if format != return_format && (result = trocla.get_password(key,return_format)).nil?
       raise(Puppet::ParseError, "Plaintext password is not present, but required to return password in format #{return_format}") if (return_format == 'plain') || trocla.get_password(key,'plain').nil?
