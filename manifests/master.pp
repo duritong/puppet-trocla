@@ -10,4 +10,10 @@ class trocla::master (
     ensure   => present,
     provider => $provider,
   }
+
+  if $provider != 'gem' {
+    Package['trocla']{
+      name => 'rubygem-trocla'
+    }
+  }
 }
