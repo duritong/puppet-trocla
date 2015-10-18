@@ -5,17 +5,17 @@
 # trocla::options::<trocla_key>::format (string) and
 # trocla::options::<trocla_key>::options (hash). Looks for <trocla_key> in
 # trocla as hiera/<source>/<trocla> with <source> iterating over the configured
-# hiera hierarchy. If not found, creates and returns a new password with trocla
-# key <trocla_key>.
+# hiera hierarchy. If not found, makes a normal trocla lookup with
+# <trocla_key> that might create a new password on the first run.
 #
 # example entry in hiera.yaml:
 # backends:
 #   - ...
 #   - trocla
 # trocla:
-#   - configfile: /etc/puppet/troclarc.yaml
-#   - format: plain
-#   - options:
+#   configfile: /etc/puppet/troclarc.yaml
+#   default_format: plain
+#   default_options:
 #     length: 16
 #
 # example usage in hiera yaml file:
@@ -26,64 +26,36 @@
 class Hiera
   module Backend
     class Trocla_backend
-
+      attr_accessor :trocla
       def initialize
-        @trocla = nil
-
         Hiera.debug("Hiera Trocla backend starting")
         require 'trocla'
-
-        default_configfile = "/etc/puppet/troclarc.yaml"
-        default_default_format = "plain"
-        default_default_options = {}
-
-        begin
-          configfile = Config[:trocla][:configfile] || default_configfile
-        rescue
-          configfile = default_configfile
-        end
-
-        if not File.exist?(configfile)
+        unless File.readable?(configfile)
           Hiera.warn("Trocla config file #{configfile} is not readable")
           return
         end
 
-        begin
-          @default_format = Config[:trocla][:format] || default_default_format
-        rescue
-          @default_format = default_default_format
-        end
-
-        begin
-          @default_options = Config[:trocla][:options] || default_default_options
-        rescue
-          @default_options = default_default_options
-        end
-
-        @trocla = Trocla.new(configfile)
+        @trocla = Trocla.new(config[:configfile])
       end
 
       def lookup(key, scope, order_override, resolution_type)
-        return nil unless @trocla
+        return nil unless trocla
 
         Hiera.debug("Looking up #{key} in trocla backend")
 
-        password_namespace = 'trocla::password::'
-        options_namespace = 'trocla::options::'
 
         # we only accept trocla::password:: lookups because we do hiera lookups
         # ourselves and could otherwise cause loops
-        return nil unless key.start_with?(password_namespace)
+        return nil unless key.start_with?(config[:password_namespace])
 
         # cut off trocla hiera namespace: trocla::password::root -> root
-        trocla_key = key[password_namespace.length,
-                         key.length - password_namespace.length]
+        trocla_key = key.sub(/^#{config[:password_namespace]}/,'')
         Hiera.debug("Looking for key #{trocla_key} in trocla")
 
         # HERE BE DRAGONS: hiera lookups from backend to determine additional
         # trocla options for this password
-        format = Backend.lookup(options_namespace + trocla_key + '::format',
-                                @default_format, scope, nil, :priority)
+        format = Backend.lookup(config[:options_namespace] + trocla_key + '::format',
+                                config[:default_format], scope, nil, :priority)
 
         answer = nil
         # Go looking for existing password as hiera/<source>/<trocla_key>.
@@ -92,23 +64,33 @@ class Hiera
         # we could use hiera's concept of datafiles to look into different
         # trocla password stores. But this would need somehow providing
         # different troclarcs as well.
-        sources = Backend.datasources(scope, order_override) do |source|
+        Backend.datasources(scope, order_override) do |source|
           Hiera.debug("Looking for data source #{source}")
-          break if answer = @trocla.send(:get_password,
-                                         'hiera/' + source + '/' + trocla_key,
-                                         format)
+          break if answer = trocla.get_password(
+                                      'hiera/' + source + '/' + trocla_key,
+                                      format)
         end
 
-        if not answer
-          # create a new password
-          options = Backend.lookup(options_namespace + trocla_key + '::options',
-                                   @default_options, scope, nil, :hash)
-          answer = @trocla.send(:password, trocla_key, format, options)
+        unless answer
+          # lookup and maybe create a new password
+          options = Backend.lookup(config[:options_namespace] + trocla_key + '::options',
+                                   config[:default_options], scope, nil, :hash)
+          answer = trocla.password(trocla_key, format, options)
         end
 
         return answer
       end
 
+      private
+      def config
+        @config ||= {
+            :configfile         => '/etc/puppet/troclarc.yaml',
+            :default_format     => 'plain',
+            :default_options    => {},
+            :password_namespace => 'trocla::password::',
+            :options_namespace  => 'trocla::options::',
+        }.merge(Config[:trocla] || {})
+      end
     end
   end
 end
