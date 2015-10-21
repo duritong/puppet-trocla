@@ -30,8 +30,8 @@ class Hiera
       def initialize
         Hiera.debug("Hiera Trocla backend starting")
         require 'trocla'
-        unless File.readable?(configfile)
-          Hiera.warn("Trocla config file #{configfile} is not readable")
+        unless File.readable?(config[:configfile])
+          Hiera.warn("Trocla config file #{config[:configfile]} is not readable")
           return
         end
 
