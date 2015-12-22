@@ -81,6 +81,10 @@ one if you do not use the default yaml setup.
 This class manages the installation of trocla itself. It will not configure
 trocla, it will just install the necessary packages.
 
+## Hiera backend
+
+Trocla can also be integrated into [Hiera](https://docs.puppetlabs.com/hiera/) by using ZeroPointEnergy's [hiera-backend](https://github.com/ZeroPointEnergy/hiera-backend-trocla).
+
 ## Moar
 
 RTFC and for more information about trocla visit: https://github.com/duritong/trocla
