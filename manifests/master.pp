@@ -3,15 +3,18 @@
 # This module manages the necessary things for trocla on a master.
 #
 class trocla::master (
-  $provider     = gem,
+  $provider = 'default',
 ) {
-  #Main trocla install
   package {'trocla':
-    ensure   => present,
-    provider => $provider,
+    ensure   => 'installed',
   }
 
-  if $provider != 'gem' {
+  if $provider != 'default' {
+    Package['trocla']{
+      provider => $provider,
+    }
+  }
+  if $provider != 'gem' and $::osfamily == 'RedHat' {
     Package['trocla']{
       name => 'rubygem-trocla'
     }

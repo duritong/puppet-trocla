@@ -11,6 +11,10 @@ clients if you do not want to use trocla on the clients itself.
 If you want to do your own very custom setup, you should look into the other
 classes.
 
+## Compatibility
+
+* Version 0.2.2 of this module is for version 0.2.2 of trocla.
+
 ## Functions
 
 ### trocla
@@ -84,6 +88,8 @@ trocla, it will just install the necessary packages.
 ## Hiera backend
 
 Trocla can also be integrated into [Hiera](https://docs.puppetlabs.com/hiera/) by using ZeroPointEnergy's [hiera-backend](https://github.com/ZeroPointEnergy/hiera-backend-trocla).
+
+Simply `include trocla::master::hiera` to make that backend available.
 
 ## Moar
 

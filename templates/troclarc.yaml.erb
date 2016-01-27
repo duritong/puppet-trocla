@@ -1,20 +1,44 @@
----
-options:
-    random: <%= @random_passwords %>
-    length: <%= @password_length %> 
-adapter: :<%= @adapter %>
-<% unless @adapter_options.empty? %>
-adapter_options:
-<% @adapter_options.keys.sort.each do |key| -%>
-    :<%= key %>: '<%= @adapter_options[key] %>'
-<% end -%>
-<% end -%>
-<% if @encryption %>
-encryption: :<%= @encryption %>
-<% end -%>
-<% unless @ssl_options.empty? %>
-ssl_options:
-<% @ssl_options.keys.sort.each do |key| -%>
-    :<%= key %>: '<%= @ssl_options[key] %>'
-<% end -%>
+<%
+  # stupid but effective sorting of yaml
+  # forgive me for that, but puppet monkeypatches yaml heavily and breaks it constantly
+  # for our use case it should be sufficient, otherwise we need to
+  # extent it to address the new problems
+  def sort_pseudo_yaml(obj, indent='')
+    arr = obj.sort {|a,b| (a[0].is_a?(Symbol) ? a[0].to_s : a[0]) <=> (b[0].is_a?(Symbol) ? b[0].to_s : b[0]) }
+    out = []
+    arr.each do |e|
+      if e[1].is_a?(Hash)
+        out << "#{indent}#{e[0]}:"
+        out << sort_pseudo_yaml(e[1],indent+'  ')
+      elsif e[1].is_a?(Array)
+        out << (["#{indent}#{e[0]}:"]+e[1].collect{|e| "- #{e}" }).join("\n#{indent}")
+      else
+        out << "#{indent}#{e[0].is_a?(Symbol) ? ":#{e[0].to_s}" : e[0]}: #{e[1].is_a?(Symbol) ? ":#{e[1].to_s}" : e[1]}"
+      end
+    end
+    out.join("\n")
+  end
+  def sym_keys(h)
+    h.keys.inject({}) do |r,k|
+      r[k.to_sym] = h[k]
+      r
+    end
+  end
+  # transform special options so they are understood by the other libraries
+  so = @store_options.dup
+  so['adapter'] = so['adapter'].to_sym if so['adapter']
+  so['adapter_options'] = sym_keys(so['adapter_options']) if so['adapter_options']
+  eo = @encryption_options ? sym_keys(@encryption_options) : {}
+  options_hash = {
+    'store'              => @store.nil? ? @store : @store.to_sym,
+    'store_options'      => so,
+    'encryption'         => @encryption.nil? ? @encryption : @encryption.to_sym,
+    'encryption_options' => eo,
+    'options'            => @options,
+    'profiles'           => @merged_profiles,
+  }.delete_if{|k,v| v.nil? || (v.is_a?(Symbol) ? v.to_s : v).empty? }
+  output = sort_pseudo_yaml(options_hash)
+-%>---
+<% unless output.empty? -%>
+<%= output %>
 <% end -%>

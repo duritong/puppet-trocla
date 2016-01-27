@@ -1,6 +1,6 @@
 {
   "name": "duritong-trocla",
-  "version": "0.0.8",
+  "version": "0.2.2",
   "author": "duritong",
   "summary": "This modules allows you to use trocla (https://github.com/duritong/trocla) from puppet.",
   "license": "GPLv2",
@@ -9,6 +9,6 @@
   "issues_url": "https://github.com/duritong/puppet-trocla/issues",
   "description": "This modules allows you use trocla lookups as puppet functions.",
   "dependencies": [
-  
+    {"name":"puppetlabs/stdlib","version_requirement":">= 3.2.0"}
   ]
 }
