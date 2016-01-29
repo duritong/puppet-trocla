@@ -6,7 +6,8 @@
 #                      Default: /var/lib/trocla/trocla_data.yaml
 #                      This should be managed using the package.
 class trocla::yaml(
-  $data_file = '/var/lib/trocla/trocla_data.yaml',
+  $manage_data_dir = true,
+  $data_file       = '/var/lib/trocla/trocla_data.yaml',
 ) {
 
   class{'trocla::config':
@@ -19,10 +20,20 @@ class trocla::yaml(
     },
   }
 
-  file{$data_file:
-    ensure  => file,
-    owner   => puppet,
-    group   => 0,
-    mode    => '0600';
+  if $manage_data_dir {
+    $data_dir = dirname($data_file)
+    file{$data_dir:
+      ensure  => directory,
+      owner   => puppet,
+      group   => 0,
+      mode    => '0600';
+    }
+  }
+  file{
+    $data_file:
+      ensure  => file,
+      owner   => puppet,
+      group   => 0,
+      mode    => '0600';
   }
 }
