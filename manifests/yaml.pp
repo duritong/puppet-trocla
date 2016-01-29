@@ -26,7 +26,8 @@ class trocla::yaml(
       ensure  => directory,
       owner   => puppet,
       group   => 0,
-      mode    => '0600';
+      mode    => '0600',
+      require => Package['trocla'];
     }
   }
   file{
@@ -34,6 +35,7 @@ class trocla::yaml(
       ensure  => file,
       owner   => puppet,
       group   => 0,
-      mode    => '0600';
+      mode    => '0600',
+      require => Package['trocla'];
   }
 }

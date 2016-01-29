@@ -28,16 +28,18 @@ store_options:
     :file: /var/lib/trocla/trocla_data.yaml
 ") }
     it { should contain_file('/var/lib/trocla').with(
-      :ensure => 'directory',
-      :owner  => 'puppet',
-      :group  => 0,
-      :mode   => '0600'
+      :ensure  => 'directory',
+      :owner   => 'puppet',
+      :group   => 0,
+      :mode    => '0600',
+      :require => 'Package[trocla]',
     )}
     it { should contain_file('/var/lib/trocla/trocla_data.yaml').with(
-      :ensure => 'file',
-      :owner  => 'puppet',
-      :group  => 0,
-      :mode   => '0600'
+      :ensure  => 'file',
+      :owner   => 'puppet',
+      :group   => 0,
+      :mode    => '0600',
+      :require => 'Package[trocla]',
     )}
     it { should compile.with_all_deps }
   end
