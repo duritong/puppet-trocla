@@ -32,14 +32,14 @@ store_options:
       :owner   => 'puppet',
       :group   => 0,
       :mode    => '0600',
-      :require => 'Package[trocla]',
+      :require => 'Package[trocla]'
     )}
     it { should contain_file('/var/lib/trocla/trocla_data.yaml').with(
       :ensure  => 'file',
       :owner   => 'puppet',
       :group   => 0,
       :mode    => '0600',
-      :require => 'Package[trocla]',
+      :require => 'Package[trocla]'
     )}
     it { should compile.with_all_deps }
   end
