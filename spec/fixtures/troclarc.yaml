@@ -1,0 +1,4 @@
+store_options:
+  adapter: :YAML
+  adapter_options:
+    :file: 'spec/fixtures/trocla_data.yaml'

@@ -1,4 +1,6 @@
 spec/fixtures
+!spec/fixtures/trocla_data.yaml
+!spec/fixtures/troclarc.yaml
 .librarian
 .tmp
 *.lock
