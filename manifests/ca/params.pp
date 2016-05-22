@@ -3,7 +3,7 @@
 # trocla('some_ca','x509',$trocla::ca::params::ca_options)
 class trocla::ca::params(
   $trocla_options = {
-    'profiles' => ['sysdomain_nc','x509long'],
+    'profiles' => ['sysdomain_nc','x509veryverylong'],
     'CN'       => "automated-ca ${name} for ${::domain}",
   },
 ) {
