@@ -26,8 +26,30 @@ Options can also be passed as a yaml string:
     $password_user3 = trocla('user3','pgsql', \"username: 'user3'\")
   "
   ) do |*args|
-    require File.dirname(__FILE__) + '/../../util/trocla_helper'
-    
-    Puppet::Util::TroclaHelper.trocla(:password,true,*args)
+    if args[0].is_a?(Array)
+        args = args[0]
+    end
+
+    key = args[0] || raise(Puppet::ParseError, "You need to pass at least a key as an argument!")
+    format = args[1] || 'plain'
+    options = args[2] || {}
+    result = nil
+
+    # you can give options as YAML string or as a hash
+    # if it's a string, we need to parse it
+    if options.is_a?(String)
+      require 'yaml'
+      options = YAML.load(options)
+    end
+
+    configfile = lookupvar('trocla_configfile') || File.join(Puppet.settings[:confdir], "troclarc.yaml")
+    raise(Puppet::ParseError, "Trocla config file #{configfile} is not readable") unless File.exist?(configfile)
+
+    require 'trocla'
+    Trocla.open(configfile) { |t|
+      result = t.password(key, format, options)
+    }
+
+    result
   end
 end

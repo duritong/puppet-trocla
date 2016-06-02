@@ -24,15 +24,27 @@ stored in trocla. This can be turned off by setting false as a third argument:
 the return value will be undef if the key & format pair is not found.
 "
   ) do |*args|
+
+    # handle puppets weird call semantics
     if args[0].is_a?(Array)
         args = args[0]
     end
-    require File.dirname(__FILE__) + '/../../util/trocla_helper'
-    args[1] ||= 'plain'
-    raise_error = args[2].nil? ? true : args[2]
-    if (answer=Puppet::Util::TroclaHelper.trocla(:get_password,false,[args[0],args[1]])).nil? && raise_error
-      raise(Puppet::ParseError, "No password for key,format #{args[0..1].flatten.inspect} found!")
-    end
-    answer.nil? ? :undef : answer
+
+    key = args[0] || raise(Puppet::ParseError, "You need to pass at least a key as an argument!")
+    format = args[1] || 'plain'
+    raise_error = args[2] || false
+    result = nil
+
+    configfile = lookupvar('trocla_configfile') || File.join(File.dirname(Puppet.settings[:config]), "troclarc.yaml")
+    raise(Puppet::ParseError, "Trocla config file #{configfile} is not readable") unless File.exist?(configfile)
+
+    require 'trocla'
+    Trocla.open(configfile) { |t|
+      result = t.get_password(key, format)
+    }
+
+    raise(Puppet::ParseError, "No password for key,format #{args[0..1].flatten.inspect} found!") if raise_error && result.nil?
+
+    result
   end
 end
