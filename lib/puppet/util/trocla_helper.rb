@@ -22,13 +22,22 @@ module Puppet::Util::TroclaHelper
           options = YAML.load(options)
         end
 
-        configfile = File.join(File.dirname(Puppet.settings[:config]), "troclarc.yaml")
-
-        raise(Puppet::ParseError, "Trocla config file #{configfile} is not readable") unless File.exist?(configfile)
-
-        require 'trocla'
-
-        has_options ? Trocla.new(configfile).send(trocla_func, key, format, options) : Trocla.new(configfile).send(trocla_func, key, format)
+        has_options ? store.send(trocla_func, key, format, options) : store.send(trocla_func, key, format)
   end
   module_function :trocla
+
+  private
+
+  def store
+    @store ||= begin
+      require 'trocla'
+      configfile = File.join(File.dirname(Puppet.settings[:config]), "troclarc.yaml")
+
+      raise(Puppet::ParseError, "Trocla config file #{configfile} is not readable") unless File.exist?(configfile)
+
+      Trocla.new(configfile)
+    end
+  end
+  module_function :store
+
 end
