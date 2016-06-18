@@ -2,3 +2,4 @@ spec/fixtures
 .librarian
 .tmp
 *.lock
+pkg/
