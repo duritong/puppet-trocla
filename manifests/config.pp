@@ -30,6 +30,7 @@ class trocla::config (
   $encryption                      = undef,
   $encryption_options              = {},
   $manage_dependencies             = true,
+  $edit_uid                        = 'puppet',
 ) {
   include ::trocla::params
   if $manage_dependencies {
@@ -51,8 +52,8 @@ class trocla::config (
   file{
     "${settings::confdir}/troclarc.yaml":
       content => template('trocla/troclarc.yaml.erb'),
-      owner   => root,
-      group   => puppet,
+      owner   => 'root',
+      group   => $edit_uid,
       mode    => '0640';
     '/etc/troclarc.yaml':
       ensure => link,

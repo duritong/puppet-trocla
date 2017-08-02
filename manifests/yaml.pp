@@ -8,9 +8,11 @@
 class trocla::yaml(
   $manage_data_dir = true,
   $data_file       = '/var/lib/trocla/trocla_data.yaml',
+  $edit_uid        = 'puppet',
 ) {
 
   class{'trocla::config':
+    edit_uid      => $edit_uid,
     store         => 'moneta',
     store_options => {
       adapter         => 'YAML',
@@ -24,7 +26,7 @@ class trocla::yaml(
     $data_dir = dirname($data_file)
     file{$data_dir:
       ensure  => directory,
-      owner   => puppet,
+      owner   => $edit_uid,
       group   => 0,
       mode    => '0600',
       require => Package['trocla'];
@@ -33,7 +35,7 @@ class trocla::yaml(
   file{
     $data_file:
       ensure  => file,
-      owner   => puppet,
+      owner   => $edit_uid,
       group   => 0,
       mode    => '0600',
       require => Package['trocla'];
