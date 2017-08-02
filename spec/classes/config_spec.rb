@@ -3,6 +3,7 @@ require File.expand_path(File.join(File.dirname(__FILE__),'../spec_helper'))
 describe 'trocla::config', :type => 'class' do
   let(:facts){
     {
+      :osfamily => 'CentOS',
       :domain => 'example.com',
     }
   }
