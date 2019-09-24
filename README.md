@@ -73,7 +73,19 @@ Usage:
 
 This will set the passed password for the key/format pair and return it
 as well. This is mainly interesting if you want to migrate existing manifests
-with plenty of passwords in it to trocla.
+with plenty of passwords in it to trocla. 
+
+Note that the `FORMAT`, in this context, is the format of the
+`PASSWORD` itself: it will not reencode it unless you pass a second
+argument, for example:
+
+    trocla_set('admin', 'test', 'plain')
+
+... will return the string "test" but this:
+
+    trocla_set('admin', 'test', 'plain', 'bcrypt')
+
+... will return a bcrypt-hashed password.
 
 ## Hiera backend
 
