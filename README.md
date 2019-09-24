@@ -69,7 +69,7 @@ existing in trocla's database.
 
 Usage:
 
-    trocla_set(KEY, FORMAT,PASSWORD)
+    trocla_set(KEY, PASSWORD, FORMAT)
 
 This will set the passed password for the key/format pair and return it
 as well. This is mainly interesting if you want to migrate existing manifests
