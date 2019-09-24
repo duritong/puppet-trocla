@@ -21,7 +21,7 @@ describe 'trocla::yaml', :type => 'class' do
 profiles:
   sysdomain_nc:
     name_constraints:
-    - example.com
+      - example.com
 store: :moneta
 store_options:
   adapter: :YAML
