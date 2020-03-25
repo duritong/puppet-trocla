@@ -56,8 +56,8 @@ trocla, for example via cli.
     result = (trocla=Trocla.new(configfile)).set_password(key,format,value)
     if format != return_format && (result = trocla.get_password(key,return_format)).nil?
       raise(Puppet::ParseError, "Plaintext password is not present, but required to return password in format #{return_format}") if (return_format == 'plain') || trocla.get_password(key,'plain').nil?
-      result = trocla.password(key,return_format,options)
+      result = trocla.password(key,return_format,options) 
     end
-    Puppet::Util::TroclaHelper.wrap(result)
+    result
   end
 end

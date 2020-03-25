@@ -53,9 +53,7 @@ the return value will be undef if the key & format pair is not found.
       end
       raise_error = options.has_key?('raise_error') ? options.delete('raise_error') : true
     end
-
-    answer = Puppet::Util::TroclaHelper.trocla(:get_password,false,[args[0],args[1],options])
-    if answer.nil? && raise_error
+    if (answer=Puppet::Util::TroclaHelper.trocla(:get_password,false,[args[0],args[1],options])).nil? && raise_error
       raise(Puppet::ParseError, "No password for key,format #{args[0..1].flatten.inspect} found!")
     end
     answer.nil? ? :undef : answer
