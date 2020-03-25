@@ -7,6 +7,7 @@ RSpec.configure do |c|
   c.module_path = File.join(fixture_path, 'modules')
   c.manifest_dir = File.join(fixture_path, 'manifests')
   c.pattern = FileList[c.pattern].exclude(/^spec\/fixtures/)
+  c.confdir = '/etc/puppet'
 end
 
 Puppet::Util::Log.level = :warning
