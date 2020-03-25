@@ -22,11 +22,28 @@ module Puppet::Util::TroclaHelper
       options = YAML.load(options)
     end
 
-    has_options ? store.send(trocla_func, key, format, options) : store.send(trocla_func, key, format)
+    result = has_options ? store.send(trocla_func, key, format, options) : store.send(trocla_func, key, format)
+    wrap(result)
   end
   module_function :trocla
 
+  def wrap(string_or_hash)
+    if string_or_hash.is_a?(Hash)
+      Hash[string_or_hash.map{|k,v| [k,wrap(v)] }]
+    elsif string_or_hash.is_a?(String)
+      sensitive(string_or_hash)
+    else
+      string_or_hash
+    end
+  end
+  module_function :wrap
+
   private
+
+  def sensitive(str)
+    Puppet::Pops::Types::PSensitiveType::Sensitive.new(str)
+  end
+  module_function :sensitive
 
   def store
     @store ||= begin
