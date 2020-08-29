@@ -24,20 +24,19 @@ class trocla::yaml(
 
   if $manage_data_dir {
     $data_dir = dirname($data_file)
-    file{$data_dir:
-      ensure  => directory,
-      owner   => $edit_uid,
-      group   => 0,
-      mode    => '0600',
-      require => Package['trocla'];
+    Package<| title == 'trocla' |> -> file{
+      $data_dir:
+        ensure  => directory,
+        owner   => $edit_uid,
+        group   => 0,
+        mode    => '0600';
     }
   }
-  file{
+  Package<| title == 'trocla' |> -> file{
     $data_file:
       ensure  => file,
       owner   => $edit_uid,
       group   => 0,
-      mode    => '0600',
-      require => Package['trocla'];
+      mode    => '0600';
   }
 }
