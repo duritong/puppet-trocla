@@ -33,6 +33,8 @@ Puppet::Functions.create_function(:trocla_lookup_key) do
       trocla_hierarchy(trocla_key, format, opts)
     end
 
+    @trocla.close
+
     context.not_found unless res
     context.cache(key, res)
   end

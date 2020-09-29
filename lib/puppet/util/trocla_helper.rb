@@ -22,7 +22,9 @@ module Puppet::Util::TroclaHelper
       options = YAML.load(options)
     end
 
-    has_options ? store.send(trocla_func, key, format, options) : store.send(trocla_func, key, format)
+    r = has_options ? store.send(trocla_func, key, format, options) : store.send(trocla_func, key, format)
+    store.close
+    r
   end
   module_function :trocla
 
