@@ -39,7 +39,7 @@ trocla, for example via cli.
       args = args[0]
     end
 
-    key = args[0] 
+    key = args[0]
     value = args[1]
     raise(Puppet::ParseError, "You need to pass at least key & value as an argument!") if key.nil? || value.nil?
 
@@ -56,8 +56,9 @@ trocla, for example via cli.
     result = (trocla=Trocla.new(configfile)).set_password(key,format,value)
     if format != return_format && (result = trocla.get_password(key,return_format)).nil?
       raise(Puppet::ParseError, "Plaintext password is not present, but required to return password in format #{return_format}") if (return_format == 'plain') || trocla.get_password(key,'plain').nil?
-      result = trocla.password(key,return_format,options) 
+      result = trocla.password(key,return_format,options)
     end
+    trocla.close
     result
   end
 end
