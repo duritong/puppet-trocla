@@ -1,0 +1,7 @@
+---
+test:
+  plain: XXX
+bar:
+  plain: AAA
+test-test:
+  plain: ===

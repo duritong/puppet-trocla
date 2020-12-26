@@ -10,5 +10,7 @@ gem 'librarian-puppet'
 gem 'puppetlabs_spec_helper'
 gem 'rake'
 
+gem 'trocla'
+
 gem 'puppet', puppetversion
 gem 'puppet-lint'
