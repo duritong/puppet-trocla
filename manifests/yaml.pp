@@ -5,13 +5,12 @@
 # [*data_file*]        Where to store the passwords.
 #                      Default: /var/lib/trocla/trocla_data.yaml
 #                      This should be managed using the package.
-class trocla::yaml(
+class trocla::yaml (
   $manage_data_dir = true,
   $data_file       = '/var/lib/trocla/trocla_data.yaml',
   $edit_uid        = 'puppet',
 ) {
-
-  class{'trocla::config':
+  class { 'trocla::config':
     edit_uid      => $edit_uid,
     store         => 'moneta',
     store_options => {
@@ -24,19 +23,19 @@ class trocla::yaml(
 
   if $manage_data_dir {
     $data_dir = dirname($data_file)
-    Package<| title == 'trocla' |> -> file{
+    Package<| title == 'trocla' |> -> file {
       $data_dir:
-        ensure  => directory,
-        owner   => $edit_uid,
-        group   => 0,
-        mode    => '0600';
+        ensure => directory,
+        owner  => $edit_uid,
+        group  => 0,
+        mode   => '0600';
     }
   }
-  Package<| title == 'trocla' |> -> file{
+  Package<| title == 'trocla' |> -> file {
     $data_file:
-      ensure  => file,
-      owner   => $edit_uid,
-      group   => 0,
-      mode    => '0600';
+      ensure => file,
+      owner  => $edit_uid,
+      group  => 0,
+      mode   => '0600';
   }
 }

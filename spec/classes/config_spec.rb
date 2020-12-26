@@ -19,7 +19,7 @@ describe 'trocla::config', :type => 'class' do
 profiles:
   sysdomain_nc:
     name_constraints:
-    - example.com
+      - example.com
 ") }
     it { should contain_file('/etc/troclarc.yaml').with(
       :ensure => 'link',
@@ -92,8 +92,8 @@ profiles:
     length: 20
   sysdomain_nc:
     name_constraints:
-    - domain1.com
-    - domain2.com
+      - domain1.com
+      - domain2.com
 store: :moneta
 store_options:
   adapter: :Sequel
