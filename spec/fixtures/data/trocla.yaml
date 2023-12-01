@@ -4,4 +4,6 @@ test:
 bar:
   plain: AAA
 test-test:
-  plain: ===
+  plain: "==="
+bar-test:
+  plain: "BBB"

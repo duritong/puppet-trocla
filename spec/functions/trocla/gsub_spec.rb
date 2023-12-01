@@ -10,6 +10,7 @@ describe 'trocla::gsub' do
         "test": { return "XXX" }
         "bar": { return "AAA" }
         "test-test": { return "===" }
+        "bar-test": { return "BBB" }
         default: { fail("unexpected key ${key}") }
       }
     }'
@@ -26,5 +27,8 @@ describe 'trocla::gsub' do
 
   context 'with prefix' do
     it { is_expected.to run.with_params('foo: %%TROCLA_test%%-bla', 'prefix' => 'test-').and_return 'foo: ===-bla' }
+  end
+  context 'with key_to_prefix' do
+    it { is_expected.to run.with_params("foo: %%TROCLA_test%%-bla\nbar: %%TROCLA_bar%%", 'key_to_prefix' => {'test' => 'bar-'}).and_return "foo: BBB-bla\nbar: AAA" }
   end
 end
