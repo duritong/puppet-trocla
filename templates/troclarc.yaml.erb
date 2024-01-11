@@ -11,7 +11,7 @@
         out << "#{indent}#{e[0]}:"
         out << sort_pseudo_yaml(e[1],indent+'  ')
       elsif e[1].is_a?(Array)
-        out << (["#{indent}#{e[0]}:"]+e[1].collect{|e| "  - #{e}" }).join("\n#{indent}")
+        out << (["#{indent}#{e[0]}:"]+e[1].collect{|e| "- #{e}" }).join("\n#{indent}")
       else
         out << "#{indent}#{e[0].is_a?(Symbol) ? ":#{e[0].to_s}" : e[0]}: #{e[1].is_a?(Symbol) ? ":#{e[1].to_s}" : e[1]}"
       end

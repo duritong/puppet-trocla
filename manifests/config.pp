@@ -3,7 +3,7 @@
 #Options
 # [*options*]             Options for trocla. Default: empty hash.
 # [*profiles*]            Profiles for trocla. Default: empty hash.
-# [*x509_profile_domain_constraint*]
+# [*x509_profile_domain_constraints*]
 #                         A profile for x509 name constraint that matches
 #                         the own domain by default.
 #                         This will add a profile for x509 certs with the
@@ -21,20 +21,23 @@
 #                         encryption. Default: empty Hash
 # [*manage_dependencies*] Whether to manage the dependencies or not.
 #                         Default *true*
+# [*edit_uid*] edit_uid
+#                         Default: puppet
+#
 class trocla::config (
-  $options                         = {},
-  $profiles                        = {},
-  $x509_profile_domain_constraints = [$::domain],
-  $store                           = undef,
-  $store_options                   = {},
-  $encryption                      = undef,
-  $encryption_options              = {},
-  $manage_dependencies             = true,
-  $edit_uid                        = 'puppet',
+  Hash $options                          = {},
+  Hash $profiles                         = {},
+  Array $x509_profile_domain_constraints = [$facts['networking']['domain']],
+  Optional[String] $store                = undef,
+  Hash $store_options                    = {},
+  Optional[String] $encryption           = undef,
+  Hash $encryption_options               = {},
+  Boolean $manage_dependencies           = true,
+  String $edit_uid                       = 'puppet',
 ) {
-  include ::trocla::params
+  include trocla::params
   if $manage_dependencies {
-    require ::trocla::master
+    require trocla::master
   }
 
   if empty($x509_profile_domain_constraints) {
@@ -42,14 +45,14 @@ class trocla::config (
   } else {
     $default_profiles = {
       "${trocla::params::sysdomain_profile_name}" => {
-        name_constraints => $x509_profile_domain_constraints
-      }
+        name_constraints => $x509_profile_domain_constraints,
+      },
     }
     $merged_profiles = merge($default_profiles,$profiles)
   }
 
   # Deploy default config file and link it for trocla cli lookup
-  file{
+  file {
     "${settings::confdir}/troclarc.yaml":
       content => template('trocla/troclarc.yaml.erb'),
       owner   => 'root',
