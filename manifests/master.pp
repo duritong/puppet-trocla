@@ -2,20 +2,24 @@
 #
 # This module manages the necessary things for trocla on a master.
 #
+# @param package_name
+# @param provider
+# @param source
+#
 class trocla::master (
-  $provider = 'default',
+  String $package_name       = 'trocla',
+  Optional[String] $provider = undef,
+  Optional[String] $source   = undef,
 ) {
-  package {'trocla':
+  package { 'trocla':
     ensure   => 'installed',
+    name     => $package_name,
+    provider => $provider,
+    source   => $source,
   }
 
-  if $provider != 'default' {
-    Package['trocla']{
-      provider => $provider,
-    }
-  }
-  if $provider != 'gem' and $provider != 'puppetserver_gem' and $::osfamily == 'RedHat' {
-    Package['trocla']{
+  if $provider != 'gem' and $provider != 'puppetserver_gem' and $facts['os']['family'] == 'RedHat' {
+    Package['trocla'] {
       name => 'rubygem-trocla'
     }
   }
