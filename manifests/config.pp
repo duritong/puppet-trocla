@@ -45,7 +45,7 @@ class trocla::config (
         name_constraints => $x509_profile_domain_constraints
       }
     }
-    $merged_profiles = merge($default_profiles,$profiles)
+    $merged_profiles = stdlib::merge($default_profiles,$profiles)
   }
 
   # Deploy default config file and link it for trocla cli lookup
