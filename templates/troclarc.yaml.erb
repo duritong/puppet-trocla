@@ -36,6 +36,7 @@
     'encryption_options' => eo,
     'options'            => @options,
     'profiles'           => @merged_profiles,
+    'hooks'              => @hooks,
   }.delete_if{|k,v| v.nil? || (v.is_a?(Symbol) ? v.to_s : v).empty? }
   output = sort_pseudo_yaml(options_hash)
 -%>---

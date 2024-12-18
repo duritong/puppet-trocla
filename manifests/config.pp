@@ -24,6 +24,8 @@
 #   Whether to manage the dependencies or not. Default *true*
 # @param edit_uid
 #   Name of the group assigned to the troclarc file.
+# @param hooks
+#   Trocla Hooks configuration
 #
 class trocla::config (
   Hash $options = {},
@@ -35,6 +37,7 @@ class trocla::config (
   Hash $encryption_options = {},
   Boolean $manage_dependencies = true,
   String $edit_uid = 'puppet',
+  Optional[Trocla::HooksConfig] $hooks = undef,
 ) {
   include trocla::params
   if $manage_dependencies {
