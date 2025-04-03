@@ -1,7 +1,5 @@
 # trocla
 
-[![Build Status](https://travis-ci.org/duritong/puppet-trocla.png)](https://travis-ci.org/duritong/puppet-trocla)
-
 This is the puppet module to manage a trocla installation on the puppet
 master. It also, provides the necessary function to query trocla from puppet.
 
