@@ -6,7 +6,7 @@ class trocla::master (
   $provider = 'default',
 ) {
   package {'trocla':
-    ensure   => 'installed',
+    ensure => 'installed',
   }
 
   if $provider != 'default' {
@@ -14,7 +14,7 @@ class trocla::master (
       provider => $provider,
     }
   }
-  if $provider != 'gem' and $provider != 'puppetserver_gem' and $::osfamily == 'RedHat' {
+  if $provider != 'gem' and $provider != 'puppetserver_gem' and $facts['os']['family'] == 'RedHat' {
     Package['trocla']{
       name => 'rubygem-trocla'
     }
