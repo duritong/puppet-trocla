@@ -3,7 +3,7 @@
   "version": "1.0.1",
   "author": "duritong",
   "summary": "This modules allows you to use trocla (https://github.com/duritong/trocla) from puppet.",
-  "license": "GPLv2",
+  "license": "GPL-2.0-only",
   "source": "https://github.com/duritong/puppet-trocla",
   "project_page": "https://github.com/duritong/puppet-trocla",
   "issues_url": "https://github.com/duritong/puppet-trocla/issues",
