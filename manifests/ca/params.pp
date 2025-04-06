@@ -4,7 +4,7 @@
 class trocla::ca::params(
   $trocla_options = {
     'profiles' => ['sysdomain_nc','x509veryverylong'],
-    'CN'       => "automated-ca ${name} for ${::domain}",
+    'CN'       => "automated-ca ${name} for ${facts['networking']['domain']}",
   },
 ) {
   $ca_options = merge($trocla_options,{ become_ca => true, render => { certonly => true }})

@@ -24,7 +24,7 @@
 class trocla::config (
   $options                         = {},
   $profiles                        = {},
-  $x509_profile_domain_constraints = [$::domain],
+  $x509_profile_domain_constraints = [$facts['networking']['domain']],
   $store                           = undef,
   $store_options                   = {},
   $encryption                      = undef,
