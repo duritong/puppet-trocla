@@ -1,0 +1,50 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  setup_matrix:
+    name: 'Setup Test Matrix'
+    runs-on: ubuntu-latest
+    outputs:
+      puppet_major_versions: ${{ steps.get-outputs.outputs.puppet_major_versions }}
+      puppet_unit_test_matrix: ${{ steps.get-outputs.outputs.puppet_unit_test_matrix }}
+    env:
+      BUNDLE_WITHOUT: development:release
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '2.7'
+          bundler-cache: true
+      - name: Validate syntax of all puppet files
+        run: bundle exec rake validate
+      - name: Validate ruby syntax and codestyle
+        run: bundle exec rake rubocop
+      - name: Check puppet code style
+        run: bundle exec rake lint
+      - name: Setup Test Matrix
+        id: get-outputs
+        run: bundle exec metadata2gha --pidfile-workaround false
+
+  unit:
+    needs: setup_matrix
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{fromJson(needs.setup_matrix.outputs.puppet_unit_test_matrix)}}
+    env:
+      BUNDLE_WITHOUT: docs
+      PUPPET_VERSION: "~> ${{ matrix.puppet }}.0"
+    name: Puppet ${{ matrix.puppet }} (Ruby ${{ matrix.ruby }})
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
+      - name: Run tests
+        run: bundle exec rake spec

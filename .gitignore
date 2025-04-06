@@ -4,3 +4,4 @@ spec/fixtures
 .tmp
 *.lock
 pkg/
+vendor
