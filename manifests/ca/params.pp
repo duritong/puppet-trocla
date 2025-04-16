@@ -15,5 +15,5 @@ class trocla::ca::params (
     'CN'       => "automated-ca ${name} for ${facts['networking']['domain']}",
   },
 ) {
-  $ca_options = merge($trocla_options, { become_ca => true, render => { certonly => true } })
+  $ca_options = $trocla_options + { become_ca => true, render => { certonly => true } }
 }
