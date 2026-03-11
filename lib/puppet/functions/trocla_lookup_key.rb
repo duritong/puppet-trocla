@@ -1,8 +1,11 @@
 # frozen_string_literal: true
 
 # The `trocla_lookup_key` is a hiera 5 `lookup_key` data provider function.
-# See [the configuration guide documentation](https://docs.puppet.com/puppet/latest/hiera_config_yaml_5.html#configuring-a-hierarchy-level-hiera-trocla) for
-# how to use this function.
+#
+# @see https://help.puppet.com/osp/current/Content/PuppetCore/hiera_hierarchies.htm
+#   For the configuration guide documentation for how to use this function.
+# @see README.md
+#   For examples for how to configure hiera.
 #
 # @since 5.0.0
 #
