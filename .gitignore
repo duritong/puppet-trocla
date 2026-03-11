@@ -1,7 +1,10 @@
 spec/fixtures
 !spec/fixtures/data/trocla.yaml
+.bundle
 .librarian
 .tmp
 *.lock
-pkg/
-vendor
+/doc
+/pkg
+/vendor
+.yardoc

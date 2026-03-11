@@ -12,11 +12,11 @@ jobs:
     env:
       BUNDLE_WITHOUT: development:release
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Setup ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: '2.7'
+          ruby-version: '3.3'
           bundler-cache: true
       - name: Validate syntax of all puppet files
         run: bundle exec rake validate
@@ -26,7 +26,7 @@ jobs:
         run: bundle exec rake lint
       - name: Setup Test Matrix
         id: get-outputs
-        run: bundle exec metadata2gha --pidfile-workaround false
+        run: bundle exec metadata2gha
 
   unit:
     needs: setup_matrix
@@ -40,7 +40,7 @@ jobs:
       PUPPET_VERSION: "~> ${{ matrix.puppet }}.0"
     name: Puppet ${{ matrix.puppet }} (Ruby ${{ matrix.ruby }})
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - name: Setup ruby
         uses: ruby/setup-ruby@v1
         with:
