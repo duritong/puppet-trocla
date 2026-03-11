@@ -32,9 +32,9 @@ class trocla::config (
   $manage_dependencies             = true,
   $edit_uid                        = 'puppet',
 ) {
-  include ::trocla::params
+  include trocla::params
   if $manage_dependencies {
-    require ::trocla::master
+    require trocla::master
   }
 
   if empty($x509_profile_domain_constraints) {
@@ -42,14 +42,14 @@ class trocla::config (
   } else {
     $default_profiles = {
       "${trocla::params::sysdomain_profile_name}" => {
-        name_constraints => $x509_profile_domain_constraints
-      }
+        name_constraints => $x509_profile_domain_constraints,
+      },
     }
     $merged_profiles = stdlib::merge($default_profiles,$profiles)
   }
 
   # Deploy default config file and link it for trocla cli lookup
-  file{
+  file {
     "${settings::confdir}/troclarc.yaml":
       content => template('trocla/troclarc.yaml.erb'),
       owner   => 'root',
