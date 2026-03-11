@@ -1,23 +1,30 @@
-require File.expand_path(File.join(File.dirname(__FILE__),'../spec_helper'))
+# frozen_string_literal: true
 
-describe 'trocla::yaml', :type => 'class' do
-  let(:facts){
+require File.expand_path(File.join(File.dirname(__FILE__), '../spec_helper'))
+
+describe 'trocla::yaml', type: 'class' do
+  let(:facts) do
     {
-      :osfamily => 'CentOS',
-      :domain => 'example.com',
+      osfamily: 'CentOS',
+      domain: 'example.com',
     }
-  }
+  end
+
   context 'with default params' do
-    it { should contain_class('trocla::config').with(
-      'store' => 'moneta',
-      'store_options' => {
-        'adapter' => 'YAML',
-        'adapter_options' => {
-          'file' => '/var/lib/trocla/trocla_data.yaml',
-        }
-      }
-    )}
-    it { should contain_file('/etc/puppet/troclarc.yaml').with_content("---
+    it {
+      is_expected.to contain_class('trocla::config').with(
+        'store' => 'moneta',
+        'store_options' => {
+          'adapter' => 'YAML',
+          'adapter_options' => {
+            'file' => '/var/lib/trocla/trocla_data.yaml',
+          },
+        },
+      )
+    }
+
+    it {
+      is_expected.to contain_file('/etc/puppet/troclarc.yaml').with_content("---
 profiles:
   sysdomain_nc:
     name_constraints:
@@ -27,20 +34,27 @@ store_options:
   adapter: :YAML
   adapter_options:
     :file: /var/lib/trocla/trocla_data.yaml
-") }
-    it { should contain_file('/var/lib/trocla').with(
-      :ensure  => 'directory',
-      :owner   => 'puppet',
-      :group   => 0,
-      :mode    => '0600',
-    )}
-    it { should contain_file('/var/lib/trocla/trocla_data.yaml').with(
-      :ensure  => 'file',
-      :owner   => 'puppet',
-      :group   => 0,
-      :mode    => '0600',
-    )}
-    it { should compile.with_all_deps }
+")
+    }
+
+    it {
+      is_expected.to contain_file('/var/lib/trocla').with(
+        ensure: 'directory',
+        owner: 'puppet',
+        group: 0,
+        mode: '0600',
+      )
+    }
+
+    it {
+      is_expected.to contain_file('/var/lib/trocla/trocla_data.yaml').with(
+        ensure: 'file',
+        owner: 'puppet',
+        group: 0,
+        mode: '0600',
+      )
+    }
+
+    it { is_expected.to compile.with_all_deps }
   end
 end
-
