@@ -31,7 +31,7 @@ class trocla::config (
   Array[String] $x509_profile_domain_constraints = [$facts['networking']['domain']],
   Optional[String] $store = undef,
   Hash $store_options = {},
-  Optional[Array[String]] $encryption = undef,
+  Optional[Variant[String, Array[String]]] $encryption = undef,
   Hash $encryption_options = {},
   Boolean $manage_dependencies = true,
   String $edit_uid = 'puppet',
