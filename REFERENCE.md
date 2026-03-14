@@ -308,7 +308,7 @@ data looked up in trocla
 The `trocla_gsub` replaces %%TROCLA_[\w_\-]+%% place holders with
 data looked up in trocla
 
-Returns: `Any`
+Returns: `String`
 
 ##### `data`
 
@@ -404,7 +404,7 @@ The `trocla_lookup_key` is a hiera 5 `lookup_key` data provider function.
 
 The `trocla_lookup_key` is a hiera 5 `lookup_key` data provider function.
 
-Returns: `Any`
+Returns: `String`
 
 ##### `key`
 

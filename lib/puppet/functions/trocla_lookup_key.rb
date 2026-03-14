@@ -16,6 +16,7 @@ Puppet::Functions.create_function(:trocla_lookup_key) do
     param 'Variant[String, Numeric]', :key
     param 'Hash', :options
     param 'Puppet::LookupContext', :context
+    return_type 'String'
   end
 
   def trocla_lookup_key(key, options, context)

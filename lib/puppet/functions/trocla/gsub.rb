@@ -7,6 +7,7 @@ Puppet::Functions.create_function(:'trocla::gsub') do
   dispatch :trocla_gsub do
     param 'String', :data
     optional_param 'Struct[{ prefix => Optional[String] }]', :options
+    return_type 'String'
   end
 
   def trocla_gsub(data, options = {})
