@@ -14,21 +14,21 @@ describe 'trocla' do
       # return value is inconsequential but it lets us abstract away the actual
       # helper code. What we're interested in here is the expected arguments to
       # TroclaHelper::trocla
-      allow(Puppet::Util::TroclaHelper).to receive(:trocla).with(:password, true, ['test']).and_return('XXX')
+      allow(Puppet::Util::TroclaHelper).to receive(:trocla).with(:password, true, 'test', 'plain', {}).and_return('XXX')
       is_expected.to run.with_params('test')
     end
   end
 
   context 'with alternative format but no options' do
     it do
-      allow(Puppet::Util::TroclaHelper).to receive(:trocla).with(:password, true, ['bar', 'mysql']).and_return('XXX')
+      allow(Puppet::Util::TroclaHelper).to receive(:trocla).with(:password, true, 'bar', 'mysql', {}).and_return('XXX')
       is_expected.to run.with_params('bar', 'mysql')
     end
   end
 
   context 'with format and options' do
     it do
-      allow(Puppet::Util::TroclaHelper).to receive(:trocla).with(:password, true, ['long', 'plain', { 'length' => '5' }]).and_return('XXX')
+      allow(Puppet::Util::TroclaHelper).to receive(:trocla).with(:password, true, 'long', 'plain', { 'length' => '5' }).and_return('XXX')
       is_expected.to run.with_params('long', 'plain', { 'length' => '5' })
     end
   end
