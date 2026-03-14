@@ -3,8 +3,16 @@
 require 'spec_helper'
 
 describe 'trocla::gsub' do
-  before do
-    Puppet.settings[:config] = File.expand_path(File.join(__FILE__, '..', '..', '..', 'fixtures/puppet.conf'))
+  # Override the trocla function since that's not what we're testing here
+  let(:pre_condition) do
+    'function trocla(String $key, String $format) >> String {
+      case $key {
+        "test": { return "XXX" }
+        "bar": { return "AAA" }
+        "test-test": { return "===" }
+        default: { fail("unexpected key ${key}") }
+      }
+    }'
   end
 
   it { is_expected.to run.with_params('foo').and_return 'foo' }
