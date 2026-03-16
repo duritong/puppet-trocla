@@ -21,6 +21,10 @@
 * [`trocla_lookup_key`](#trocla_lookup_key): The `trocla_lookup_key` is a hiera 5 `lookup_key` data provider function.
 * [`trocla_set`](#trocla_set): This will set a password/hash in the local storage and return itself,   or hashed in another format, if the password is present in plaintext 
 
+### Data types
+
+* [`Trocla::HooksConfig`](#Trocla--HooksConfig): the trocla hooks config options
+
 ## Classes
 
 ### <a name="trocla--ca--params"></a>`trocla::ca::params`
@@ -76,6 +80,7 @@ The following parameters are available in the `trocla::config` class:
 * [`encryption_options`](#-trocla--config--encryption_options)
 * [`manage_dependencies`](#-trocla--config--manage_dependencies)
 * [`edit_uid`](#-trocla--config--edit_uid)
+* [`hooks`](#-trocla--config--hooks)
 
 ##### <a name="-trocla--config--options"></a>`options`
 
@@ -154,6 +159,14 @@ Data type: `String`
 Name of the group assigned to the troclarc file.
 
 Default value: `'puppet'`
+
+##### <a name="-trocla--config--hooks"></a>`hooks`
+
+Data type: `Optional[Trocla::HooksConfig]`
+
+Trocla Hooks configuration
+
+Default value: `undef`
 
 ### <a name="trocla--master"></a>`trocla::master`
 
@@ -303,7 +316,7 @@ Type: Ruby 4.x API
 The `trocla_gsub` replaces %%TROCLA_[\w_\-]+%% place holders with
 data looked up in trocla
 
-#### `trocla::gsub(String $data, Optional[Struct[{ prefix => Optional[String] }]] $options)`
+#### `trocla::gsub(String $data, Optional[Struct[{ prefix => Optional[String], key_to_prefix => Optional[Hash[String,String]] }]] $options)`
 
 The `trocla_gsub` replaces %%TROCLA_[\w_\-]+%% place holders with
 data looked up in trocla
@@ -318,7 +331,7 @@ Data type: `String`
 
 ##### `options`
 
-Data type: `Optional[Struct[{ prefix => Optional[String] }]]`
+Data type: `Optional[Struct[{ prefix => Optional[String], key_to_prefix => Optional[Hash[String,String]] }]]`
 
 
 
@@ -499,4 +512,19 @@ This will likely fail, except if you add the plain password or the sha512crypt h
 trocla, for example via cli.
 
 Returns: `Any`
+
+## Data types
+
+### <a name="Trocla--HooksConfig"></a>`Trocla::HooksConfig`
+
+the trocla hooks config options
+
+Alias of
+
+```puppet
+Struct[{
+  set    => Optional[Hash[String, Stdlib::Unixpath]],
+  delete => Optional[Hash[String, Stdlib::Unixpath]],
+}]
+```
 
