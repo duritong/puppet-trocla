@@ -14,14 +14,14 @@ Puppet::Functions.create_function(:'trocla::gsub') do
     res = data.dup
     trocla_keys = res.scan(%r{%%TROCLA_[\w_\-.@]+%%})
     trocla_keys.each do |k|
-      tk = k.match(/%%TROCLA_([\w_\-\.@]+)%%/)[1]
-      if options['key_to_prefix'].is_a?(Hash) && (prefix = options['key_to_prefix'][tk])
-        trocla_key = "#{prefix}#{tk}"
-      else
-        trocla_key = "#{options['prefix']}#{tk}"
-      end
-      trocla_val = call_function('trocla', trocla_key ,'plain')
-      res = res.gsub(k,trocla_val)
+      tk = k.match(%r{%%TROCLA_([\w_\-.@]+)%%})[1]
+      trocla_key = if options['key_to_prefix'].is_a?(Hash) && (prefix = options['key_to_prefix'][tk])
+                     "#{prefix}#{tk}"
+                   else
+                     "#{options['prefix']}#{tk}"
+                   end
+      trocla_val = call_function('trocla', trocla_key, 'plain')
+      res = res.gsub(k, trocla_val)
     end
     res
   end
