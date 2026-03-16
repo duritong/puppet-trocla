@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 module Puppet::Parser::Functions
-  newfunction(:trocla_set, :type => :rvalue, :doc => "
+  newfunction(:trocla_set, type: :rvalue, doc: "
   This will set a password/hash in the local storage and return itself,
   or hashed in another format, if the password is present in plaintext or
   in that specific hash format.
@@ -33,30 +35,28 @@ Will set the plain password 'mysecret' and return a pgsql md5 hash for user5.
 
 This will likely fail, except if you add the plain password or the sha512crypt hash manually to
 trocla, for example via cli.
-"
-) do |*args|
-    if args[0].is_a?(Array)
-      args = args[0]
-    end
+") do |*args|
+    args = args[0] if args[0].is_a?(Array)
 
     key = args[0]
     value = args[1]
-    raise(Puppet::ParseError, "You need to pass at least key & value as an argument!") if key.nil? || value.nil?
+    raise(Puppet::ParseError, 'You need to pass at least key & value as an argument!') if key.nil? || value.nil?
 
     format = args[2] || 'plain'
     return_format = args[3] || format
     options = args[4] || {}
 
-    configfile = File.join(File.dirname(Puppet.settings[:config]), "troclarc.yaml")
+    configfile = File.join(File.dirname(Puppet.settings[:config]), 'troclarc.yaml')
 
     raise(Puppet::ParseError, "Trocla config file #{configfile} not readable") unless File.exist?(configfile)
 
     require 'trocla'
 
-    result = (trocla=Trocla.new(configfile)).set_password(key,format,value)
-    if format != return_format && (result = trocla.get_password(key,return_format)).nil?
-      raise(Puppet::ParseError, "Plaintext password is not present, but required to return password in format #{return_format}") if (return_format == 'plain') || trocla.get_password(key,'plain').nil?
-      result = trocla.password(key,return_format,options)
+    result = (trocla = Trocla.new(configfile)).set_password(key, format, value)
+    if format != return_format && (result = trocla.get_password(key, return_format)).nil?
+      raise(Puppet::ParseError, "Plaintext password is not present, but required to return password in format #{return_format}") if (return_format == 'plain') || trocla.get_password(key, 'plain').nil?
+
+      result = trocla.password(key, return_format, options)
     end
     trocla.close
     result

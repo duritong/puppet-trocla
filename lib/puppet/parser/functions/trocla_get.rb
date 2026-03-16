@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 module Puppet::Parser::Functions
-  newfunction(:trocla_get, :type => :rvalue, :doc => "
+  newfunction(:trocla_get, type: :rvalue, doc: "
   This will only get an already stored password from the trocla storage.
 
 Usage:
@@ -31,12 +33,9 @@ or setting the 'raise_error' option to false:
     $password_user3 = trocla_get('user2','mysql', { raise_error => false })
 
 the return value will be undef if the key & format pair is not found.
-"
-  ) do |*args|
-    if args[0].is_a?(Array)
-        args = args[0]
-    end
-    require File.dirname(__FILE__) + '/../../util/trocla_helper'
+") do |*args|
+    args = args[0] if args[0].is_a?(Array)
+    require "#{File.dirname(__FILE__)}/../../util/trocla_helper"
     args[1] ||= 'plain'
     options = {}
     if args[2].nil?
@@ -45,18 +44,16 @@ the return value will be undef if the key & format pair is not found.
       raise_error = args[2]
     else
       options = args[2]
-      if options.is_a?(String)
-        options = YAML.load(options)
-      end
-      if !options.is_a?(Hash)
-        raise(Puppet::ParseError, 'Third argument to trocla_get must either be a boolean, yaml string or a hash')
-      end
-      raise_error = options.has_key?('raise_error') ? options.delete('raise_error') : true
+      options = YAML.safe_load(options) if options.is_a?(String)
+      raise(Puppet::ParseError, 'Third argument to trocla_get must either be a boolean, yaml string or a hash') unless options.is_a?(Hash)
+
+      raise_error = options.key?('raise_error') ? options.delete('raise_error') : true
     end
     has_options = !options.empty?
-    if (answer=Puppet::Util::TroclaHelper.trocla(:get_password,has_options,[args[0],args[1],options])).nil? && raise_error
+    if (answer = Puppet::Util::TroclaHelper.trocla(:get_password, has_options, [args[0], args[1], options])).nil? && raise_error
       raise(Puppet::ParseError, "No password for key,format #{args[0..1].flatten.inspect} found!")
     end
+
     answer.nil? ? :undef : answer
   end
 end

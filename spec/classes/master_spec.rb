@@ -1,52 +1,54 @@
-require File.expand_path(File.join(File.dirname(__FILE__),'../spec_helper'))
+# frozen_string_literal: true
 
-describe 'trocla::master', :type => 'class' do
-  context 'with default params' do
-    context 'on RedHat' do
-      let(:facts) {
-        {
-          :osfamily => 'RedHat',
+require 'spec_helper'
+
+describe 'trocla::master', type: 'class' do
+  on_supported_os.each do |os, facts|
+    context "on #{os}" do
+      let(:facts) { facts }
+
+      context 'with default params' do
+        it { is_expected.to compile.with_all_deps }
+
+        it {
+          is_expected.to contain_package('trocla').with(
+            ensure: 'installed',
+          )
         }
-      }
-      it { should contain_package('trocla').with(
-        :name     => 'rubygem-trocla',
-        :ensure   => 'installed'
-      )}
-      it { should compile.with_all_deps }
-    end
-    context 'on Debian' do
-      let(:facts) {
-        {
-          :osfamily => 'Debian',
+
+        if facts[:os]['family'] == 'RedHat'
+          it {
+            is_expected.to contain_package('trocla').with(
+              name: 'rubygem-trocla',
+            )
+          }
+        end
+      end
+
+      context 'with gem provider' do
+        let(:params) do
+          {
+            provider: 'gem',
+          }
+        end
+
+        it { is_expected.to compile.with_all_deps }
+
+        it {
+          is_expected.to contain_package('trocla').with(
+            ensure: 'installed',
+            provider: 'gem',
+          )
         }
-      }
-      it { should contain_package('trocla').with(
-        :ensure   => 'installed'
-      )}
-      it { should compile.with_all_deps }
-    end
-  end
-  context 'with gem provider' do
-    let(:params){
-      {
-        :provider => 'gem'
-      }
-    }
-    it { should contain_package('trocla').with(
-      :ensure   => 'installed',
-      :provider => 'gem'
-    )}
 
-    it { should compile.with_all_deps }
-    context 'on RedHat' do
-      it { should contain_package('trocla').with(
-        :name     => 'trocla',
-        :ensure   => 'installed',
-        :provider => 'gem'
-      )}
-
-      it { should compile.with_all_deps }
+        if facts[:os]['family'] == 'RedHat'
+          it {
+            is_expected.to contain_package('trocla').with(
+              name: 'trocla',
+            )
+          }
+        end
+      end
     end
   end
 end
-

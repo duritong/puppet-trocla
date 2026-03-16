@@ -1,6 +1,7 @@
-# manage trocla/hiera integration
+# @summary manage trocla/hiera integration
+#
 class trocla::master::hiera {
-  package{'rubygem-hiera-backend-trocla':
+  package { 'rubygem-hiera-backend-trocla':
     ensure => present,
   }
 }
