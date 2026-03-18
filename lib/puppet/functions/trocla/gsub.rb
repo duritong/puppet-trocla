@@ -1,7 +1,11 @@
 # frozen_string_literal: true
 
-# The `trocla_gsub` replaces %%TROCLA_[\w_\-]+%% place holders with
-# data looked up in trocla
+# @summary replace %%TROCLA_[\w_\-]+%% place holders with data looked up in
+#   trocla
+#
+# The optional `options` param is not passed directly to `trocla()`. If it
+# contains the key `prefix` then the value will be prepended to the key name
+# that's used for the lookup.
 #
 Puppet::Functions.create_function(:'trocla::gsub') do
   dispatch :trocla_gsub do
