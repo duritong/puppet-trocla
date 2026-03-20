@@ -28,7 +28,7 @@
 #     $password_user3 = trocla_get('user2','mysql', 'raise_error: false')
 #
 Puppet::Functions.create_function(:trocla_get) do
-  require "#{File.dirname(__FILE__)}/../util/trocla_helper"
+  require 'puppet/util/trocla_helper'
 
   dispatch :trocla_get do
     param 'String', :key

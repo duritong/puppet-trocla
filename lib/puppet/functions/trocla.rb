@@ -22,7 +22,7 @@
 #     $password_user3 = trocla('user3','pgsql', \"username: 'user3'\")
 #
 Puppet::Functions.create_function(:trocla) do
-  require "#{File.dirname(__FILE__)}/../util/trocla_helper"
+  require 'puppet/util/trocla_helper'
 
   dispatch :trocla do
     param 'String', :key
