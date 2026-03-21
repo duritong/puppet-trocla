@@ -15,11 +15,12 @@
 
 ### Functions
 
-* [`trocla`](#trocla): This will create or get a random password from the trocla storage.  Usage:      $password_user1 = trocla(key,[format='plain'[,options={}]])  
-* [`trocla::gsub`](#trocla--gsub): The `trocla_gsub` replaces %%TROCLA_[\w_\-]+%% place holders with data looked up in trocla
-* [`trocla_get`](#trocla_get): This will only get an already stored password from the trocla storage.  Usage:      $password_user1 = trocla_get(key,[format='plain'[,raise_e
+* [`trocla`](#trocla): Create or get a random password from the trocla storage.
+* [`trocla::gsub`](#trocla--gsub): replace %%TROCLA_[\w_\-]+%% place holders with data looked up in
+trocla
+* [`trocla_get`](#trocla_get): Get an already stored password from the trocla storage.
 * [`trocla_lookup_key`](#trocla_lookup_key): The `trocla_lookup_key` is a hiera 5 `lookup_key` data provider function.
-* [`trocla_set`](#trocla_set): This will set a password/hash in the local storage and return itself,   or hashed in another format, if the password is present in plaintext 
+* [`trocla_set`](#trocla_set): Set a password/hash and return it as-is or hashed in a different format.
 
 ### Data types
 
@@ -253,73 +254,109 @@ Default value: `'puppet'`
 
 ### <a name="trocla"></a>`trocla`
 
-Type: Ruby 3.x API
-
-This will create or get a random password from the trocla storage.
+Type: Ruby 4.x API
 
 Usage:
 
     $password_user1 = trocla(key,[format='plain'[,options={}]])
 
-Means:
+#### Examples
 
-    $password_user1 = trocla('user1')
+##### Create or get the plain text password for the key 'user1'
 
-Create or get the plain text password for the key 'user1'
+```puppet
+$password_user1 = trocla('user1')
+```
 
-    $password_user2 = trocla('user2','mysql')
+##### Create or get the mysql style sha1 hashed password.
 
-Create or get the mysql style sha1 hashed password.
+```puppet
+$password_user2 = trocla('user2','mysql')
+```
 
-    $options_user3 = { 'username' => 'user3' } # Due to a puppet bug
-                                               # this needs to be assigned
-                                               # like that.
-    $password_user3 = trocla('user3','pgsql', $options_user3)
+##### Passing options
 
-Options can also be passed as a yaml string:
+```puppet
+$options_user3 = { 'username' => 'user3' } # Due to a puppet bug
+                                           # this needs to be assigned
+                                           # like that.
+$password_user3 = trocla('user3','pgsql', $options_user3)
+```
 
-    $password_user3 = trocla('user3','pgsql', \"username: 'user3'\")
+##### Options can also be passed as a yaml string
 
-#### `trocla()`
+```puppet
+$password_user3 = trocla('user3','pgsql', \"username: 'user3'\")
+```
 
-This will create or get a random password from the trocla storage.
+#### `trocla(String $key, Optional[String] $format, Optional[Hash[String, Any]] $options)`
 
 Usage:
 
     $password_user1 = trocla(key,[format='plain'[,options={}]])
 
-Means:
+Returns: `String`
 
-    $password_user1 = trocla('user1')
+##### Examples
 
-Create or get the plain text password for the key 'user1'
+###### Create or get the plain text password for the key 'user1'
 
-    $password_user2 = trocla('user2','mysql')
+```puppet
+$password_user1 = trocla('user1')
+```
 
-Create or get the mysql style sha1 hashed password.
+###### Create or get the mysql style sha1 hashed password.
 
-    $options_user3 = { 'username' => 'user3' } # Due to a puppet bug
-                                               # this needs to be assigned
-                                               # like that.
-    $password_user3 = trocla('user3','pgsql', $options_user3)
+```puppet
+$password_user2 = trocla('user2','mysql')
+```
 
-Options can also be passed as a yaml string:
+###### Passing options
 
-    $password_user3 = trocla('user3','pgsql', \"username: 'user3'\")
+```puppet
+$options_user3 = { 'username' => 'user3' } # Due to a puppet bug
+                                           # this needs to be assigned
+                                           # like that.
+$password_user3 = trocla('user3','pgsql', $options_user3)
+```
 
-Returns: `Any`
+###### Options can also be passed as a yaml string
+
+```puppet
+$password_user3 = trocla('user3','pgsql', \"username: 'user3'\")
+```
+
+##### `key`
+
+Data type: `String`
+
+
+
+##### `format`
+
+Data type: `Optional[String]`
+
+
+
+##### `options`
+
+Data type: `Optional[Hash[String, Any]]`
+
+
 
 ### <a name="trocla--gsub"></a>`trocla::gsub`
 
 Type: Ruby 4.x API
 
-The `trocla_gsub` replaces %%TROCLA_[\w_\-]+%% place holders with
-data looked up in trocla
+The optional `options` param is not passed directly to `trocla()`. If it
+contains the key `prefix` then the value will be prepended to the key name
+that's used for the lookup.
 
 #### `trocla::gsub(String $data, Optional[Struct[{ prefix => Optional[String], key_to_prefix => Optional[Hash[String,String]] }]] $options)`
 
-The `trocla_gsub` replaces %%TROCLA_[\w_\-]+%% place holders with
-data looked up in trocla
+The optional `options` param is not passed directly to `trocla()`. If it
+contains the key `prefix` then the value will be prepended to the key name
+that's used for the lookup.
 
 Returns: `String`
 
@@ -337,75 +374,123 @@ Data type: `Optional[Struct[{ prefix => Optional[String], key_to_prefix => Optio
 
 ### <a name="trocla_get"></a>`trocla_get`
 
-Type: Ruby 3.x API
+Type: Ruby 4.x API
 
-This will only get an already stored password from the trocla storage.
-
-Usage:
-
-    $password_user1 = trocla_get(key,[format='plain'[,raise_error=true]])
-
-Means:
-
-    $password_user1 = trocla('user1')
-
-Get the plain text password for the key 'user1'
-
-    $password_user2 = trocla_get('user2','mysql')
-
-Get the mysql style sha1 hashed password.
-
-    $cert_x509_key = trocla_get('cert_x509','x509', 'render: keyonly')
-
-Get the x509 style private key, by passing any trocla options as a third
-argument.
-
-By default puppet will raise a parse error if the password haven't yet been
-stored in trocla. This can be turned off by setting false as a third argument:
-
-    $password_user3 = trocla_get('user2','mysql',false)
-
-or setting the 'raise_error' option to false:
-
-    $password_user3 = trocla_get('user2','mysql', { raise_error => false })
-
-the return value will be undef if the key & format pair is not found.
-
-#### `trocla_get()`
-
-This will only get an already stored password from the trocla storage.
+This function will not create a new password if the key does not exist. By
+default requesting an unknown key will raise a parse error.
 
 Usage:
 
     $password_user1 = trocla_get(key,[format='plain'[,raise_error=true]])
 
-Means:
+#### Examples
 
-    $password_user1 = trocla('user1')
+##### Get the plain text password for the key 'user1'.
 
-Get the plain text password for the key 'user1'
+```puppet
+$password_user1 = trocla('user1')
+```
 
-    $password_user2 = trocla_get('user2','mysql')
+##### Get the mysql style sha1 hashed password.
 
-Get the mysql style sha1 hashed password.
+```puppet
+$password_user2 = trocla_get('user2','mysql')
+```
 
-    $cert_x509_key = trocla_get('cert_x509','x509', 'render: keyonly')
+##### Get the x509 style private key, by passing any trocla options as a
 
-Get the x509 style private key, by passing any trocla options as a third
-argument.
+```puppet
+third argument.
+  $cert_x509_key = trocla_get('cert_x509','x509', 'render: keyonly')
+```
 
-By default puppet will raise a parse error if the password haven't yet been
-stored in trocla. This can be turned off by setting false as a third argument:
+##### Disable raising an error on unknown key. The function will return
 
-    $password_user3 = trocla_get('user2','mysql',false)
+```puppet
+undef instead.
+  $password_user3 = trocla_get('user2','mysql',false)
+```
 
-or setting the 'raise_error' option to false:
+##### Disable raising an error using a hash
 
-    $password_user3 = trocla_get('user2','mysql', { raise_error => false })
+```puppet
+$password_user3 = trocla_get('user2','mysql', { raise_error => false })
+```
 
-the return value will be undef if the key & format pair is not found.
+##### Disable raising an error using a yaml string
 
-Returns: `Any`
+```puppet
+$password_user3 = trocla_get('user2','mysql', 'raise_error: false')
+```
+
+#### `trocla_get(String $key, Optional[String] $format, Optional[Variant[Boolean, String, Hash[String, Any]]] $options)`
+
+This function will not create a new password if the key does not exist. By
+default requesting an unknown key will raise a parse error.
+
+Usage:
+
+    $password_user1 = trocla_get(key,[format='plain'[,raise_error=true]])
+
+Returns: `Variant[String, Undef]`
+
+##### Examples
+
+###### Get the plain text password for the key 'user1'.
+
+```puppet
+$password_user1 = trocla('user1')
+```
+
+###### Get the mysql style sha1 hashed password.
+
+```puppet
+$password_user2 = trocla_get('user2','mysql')
+```
+
+###### Get the x509 style private key, by passing any trocla options as a
+
+```puppet
+third argument.
+  $cert_x509_key = trocla_get('cert_x509','x509', 'render: keyonly')
+```
+
+###### Disable raising an error on unknown key. The function will return
+
+```puppet
+undef instead.
+  $password_user3 = trocla_get('user2','mysql',false)
+```
+
+###### Disable raising an error using a hash
+
+```puppet
+$password_user3 = trocla_get('user2','mysql', { raise_error => false })
+```
+
+###### Disable raising an error using a yaml string
+
+```puppet
+$password_user3 = trocla_get('user2','mysql', 'raise_error: false')
+```
+
+##### `key`
+
+Data type: `String`
+
+
+
+##### `format`
+
+Data type: `Optional[String]`
+
+
+
+##### `options`
+
+Data type: `Optional[Variant[Boolean, String, Hash[String, Any]]]`
+
+
 
 ### <a name="trocla_lookup_key"></a>`trocla_lookup_key`
 
@@ -439,79 +524,143 @@ Data type: `Puppet::LookupContext`
 
 ### <a name="trocla_set"></a>`trocla_set`
 
-Type: Ruby 3.x API
+Type: Ruby 4.x API
 
-This will set a password/hash in the local storage and return itself,
-  or hashed in another format, if the password is present in plaintext or
-  in that specific hash format.
+The function operates on two different formats, one for the value of the
+password and one for the return value. By default the return format is set to
+be the same as the value format.
 
-  This function is mainly useful to migrate from hashes in manifests to trocla only manifests.
+If the password is present in plaintext, either as the value format or if it
+was already there in local storage, it can be rehashed into a different,
+return format that the function then returns.
 
-Usage:
-
-    $password_user1 = trocla_set(key,value,[format='plain',[return_format,[options={}]]])
-
-Means:
-
-    $password_user1 = trocla_set('user1','mysecret')
-
-Will set and return 'mysecret' as plain password.
-
-    $password_user2 = trocla_set('user2','*AAA...','mysql')
-
-Will set and return the sha1 hashed mysql password for the key user2.
-
-    $password_user3 = trocla_set('user3','mysecret','plain','sha512crypt')
-
-Will set 'mysecret' as plain password, but return a newly created sha512crypt hash.
-
-    $postgres_user4 = { username => 'user4' }
-    $password_user4 = trocla_set('user4','mysecret','plain','pgsql',$postgres_user4)
-
-Will set the plain password 'mysecret' and return a pgsql md5 hash for user5.
-
-    $password_user2 = trocla_set('user2','*AAA...','mysql','sha512crypt')
-
-This will likely fail, except if you add the plain password or the sha512crypt hash manually to
-trocla, for example via cli.
-
-#### `trocla_set()`
-
-This will set a password/hash in the local storage and return itself,
-  or hashed in another format, if the password is present in plaintext or
-  in that specific hash format.
-
-  This function is mainly useful to migrate from hashes in manifests to trocla only manifests.
+This function is mainly useful to migrate from hashes in manifests to trocla
+only manifests.
 
 Usage:
 
     $password_user1 = trocla_set(key,value,[format='plain',[return_format,[options={}]]])
 
-Means:
+#### Examples
 
-    $password_user1 = trocla_set('user1','mysecret')
+##### Set and return 'mysecret' as plain password.
 
-Will set and return 'mysecret' as plain password.
+```puppet
+$password_user1 = trocla_set('user1','mysecret')
+```
 
-    $password_user2 = trocla_set('user2','*AAA...','mysql')
+##### Set and return the sha1 hashed mysql password for the key user2.
 
-Will set and return the sha1 hashed mysql password for the key user2.
+```puppet
+$password_user2 = trocla_set('user2','*AAA...','mysql')
+```
 
-    $password_user3 = trocla_set('user3','mysecret','plain','sha512crypt')
+##### Set 'mysecret' as plain password, but return a newly created
 
-Will set 'mysecret' as plain password, but return a newly created sha512crypt hash.
+```puppet
+sha512crypt hash.
+  $password_user3 = trocla_set('user3','mysecret','plain','sha512crypt')
+```
 
-    $postgres_user4 = { username => 'user4' }
-    $password_user4 = trocla_set('user4','mysecret','plain','pgsql',$postgres_user4)
+##### Set the plain password 'mysecret' and return a pgsql md5 hash for
 
-Will set the plain password 'mysecret' and return a pgsql md5 hash for user5.
+```puppet
+user4.
+  $postgres_user4 = { username => 'user4' }
+  $password_user4 = trocla_set('user4','mysecret','plain','pgsql',$postgres_user4)
+```
 
-    $password_user2 = trocla_set('user2','*AAA...','mysql','sha512crypt')
+##### This will likely fail, except if you add the plain password or the
 
-This will likely fail, except if you add the plain password or the sha512crypt hash manually to
-trocla, for example via cli.
+```puppet
+sha512crypt hash manually to trocla, for example via cli.
+  $password_user2 = trocla_set('user2','*AAA...','mysql','sha512crypt')
+```
 
-Returns: `Any`
+#### `trocla_set(String $key, String $value, Optional[String] $format, Optional[String] $return_format, Optional[Variant[String, Hash[String, Any]]] $options)`
+
+The function operates on two different formats, one for the value of the
+password and one for the return value. By default the return format is set to
+be the same as the value format.
+
+If the password is present in plaintext, either as the value format or if it
+was already there in local storage, it can be rehashed into a different,
+return format that the function then returns.
+
+This function is mainly useful to migrate from hashes in manifests to trocla
+only manifests.
+
+Usage:
+
+    $password_user1 = trocla_set(key,value,[format='plain',[return_format,[options={}]]])
+
+Returns: `String`
+
+##### Examples
+
+###### Set and return 'mysecret' as plain password.
+
+```puppet
+$password_user1 = trocla_set('user1','mysecret')
+```
+
+###### Set and return the sha1 hashed mysql password for the key user2.
+
+```puppet
+$password_user2 = trocla_set('user2','*AAA...','mysql')
+```
+
+###### Set 'mysecret' as plain password, but return a newly created
+
+```puppet
+sha512crypt hash.
+  $password_user3 = trocla_set('user3','mysecret','plain','sha512crypt')
+```
+
+###### Set the plain password 'mysecret' and return a pgsql md5 hash for
+
+```puppet
+user4.
+  $postgres_user4 = { username => 'user4' }
+  $password_user4 = trocla_set('user4','mysecret','plain','pgsql',$postgres_user4)
+```
+
+###### This will likely fail, except if you add the plain password or the
+
+```puppet
+sha512crypt hash manually to trocla, for example via cli.
+  $password_user2 = trocla_set('user2','*AAA...','mysql','sha512crypt')
+```
+
+##### `key`
+
+Data type: `String`
+
+
+
+##### `value`
+
+Data type: `String`
+
+
+
+##### `format`
+
+Data type: `Optional[String]`
+
+
+
+##### `return_format`
+
+Data type: `Optional[String]`
+
+
+
+##### `options`
+
+Data type: `Optional[Variant[String, Hash[String, Any]]]`
+
+
 
 ## Data types
 
