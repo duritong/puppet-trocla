@@ -1,9 +1,0 @@
----
-test:
-  plain: XXX
-bar:
-  plain: AAA
-test-test:
-  plain: "==="
-bar-test:
-  plain: "BBB"
