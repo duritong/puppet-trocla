@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require File.expand_path(File.join(File.dirname(__FILE__), '../spec_helper'))
+require 'spec_helper'
 
 describe 'trocla::params', type: 'class' do
   on_supported_os.each do |os, facts|
