@@ -26,10 +26,17 @@ describe 'trocla' do
     end
   end
 
-  context 'with format and options' do
+  context 'with format and options as a hash' do
     it do
       allow(Puppet::Util::TroclaHelper).to receive(:trocla).with(:password, true, 'long', 'plain', { 'length' => '5' }).and_return('XXX')
       is_expected.to run.with_params('long', 'plain', { 'length' => '5' })
+    end
+  end
+
+  context 'with format and options as a yaml string' do
+    it do
+      allow(Puppet::Util::TroclaHelper).to receive(:trocla).with(:password, true, 'long', 'plain', 'length: 32').and_return('XXX')
+      is_expected.to run.with_params('long', 'plain', 'length: 32')
     end
   end
 end

@@ -27,7 +27,7 @@ Puppet::Functions.create_function(:trocla) do
   dispatch :trocla do
     param 'String', :key
     optional_param 'String', :format
-    optional_param 'Hash[String, Any]', :options
+    optional_param 'Variant[String, Hash[String, Any]]', :options
     return_type 'String'
   end
 
