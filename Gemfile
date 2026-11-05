@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 puppetversion = ENV.key?('PUPPET_VERSION') ? ENV['PUPPET_VERSION'].to_s : ['>= 7.1.0']
 
 gem 'rake'
-gem 'puppet', puppetversion
+gem ENV.fetch('PUPPET_GEM', 'openvox'), puppetversion
 gem 'trocla'
 
 group :tests do
